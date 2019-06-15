@@ -18,9 +18,21 @@ public class LoginServlet extends BaseServlet {
         PrintWriter out = resp.getWriter();
         String username = req.getParameter("User");
         String password = req.getParameter("Password");
+        String type = req.getParameter("type");
 
         HttpSession session = req.getSession(true);
-        session.removeAttribute("errorTxt");
+        //session.removeAttribute("errorTxt");
+
+        if (type != null && !type.equals("")){
+            session.setAttribute("errorTxt", "");
+            session.removeAttribute("userId");
+            session.removeAttribute("millis");
+            resp.sendRedirect("login.jsp");
+
+            return;
+        }
+
+
 
         JSONUtility jsu = new JSONUtility();
         //jsu.createNewUser("alvaro","asdasd");
@@ -38,8 +50,9 @@ public class LoginServlet extends BaseServlet {
             session.setAttribute("millis", Calendar.getInstance().getTimeInMillis());
             session.setMaxInactiveInterval(3600);
             resp.sendRedirect("/");
+            return;
         } else {
-            session.setAttribute("errorTxt", "Usuario o Contrase&ntilde;a incorrectos.");
+            session.setAttribute("errorTxt", "Usuario o Contrase&ntilde;a incorrecto.");
             resp.sendRedirect("login.jsp");
         }
 

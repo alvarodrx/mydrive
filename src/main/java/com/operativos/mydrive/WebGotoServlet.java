@@ -24,7 +24,7 @@ public class WebGotoServlet extends BaseServlet {
             HttpSession session = req.getSession(true);
             session.setAttribute("errorTxt", "Sesion terminada.");
             session.removeAttribute("millis");
-            resp.sendRedirect("index.jsp");
+            resp.sendRedirect("login.jsp");
         }
     }
 
