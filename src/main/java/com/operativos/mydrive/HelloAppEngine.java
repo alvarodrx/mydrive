@@ -21,7 +21,47 @@ public class HelloAppEngine extends HttpServlet {
 
     response.setContentType("text/plain");
     response.getWriter().println("Hello App Engine - Standard using "
-        + SystemProperty.version.get() + " Java " + properties.get("java.specification.version"));
+            + SystemProperty.version.get() + " Java " + properties.get("java.specification.version"));
+
+    String currentDirectory = "";
+
+    Directorio MiDirectorio = new Directorio("MyDrive");
+
+
+    currentDirectory = MiDirectorio.getPath();
+
+
+    MiDirectorio.CrearDirectorio("Mis Archivos");
+    MiDirectorio.CrearDirectorio("Compartido Conmigo");
+
+
+    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getPath();
+
+
+
+    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis apuntes");
+    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis tareas");
+
+
+
+    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").getPath();
+
+
+
+    //Creacion de un archivo
+    Archivo archivo = new Archivo("Apuntes 1.txt");
+    archivo.setVirtualPath(currentDirectory);
+
+    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
+
+
+
+    String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
+
+
+    response.getWriter().println(currentDirectory);
+
+    response.getWriter().println(CompleteDirectoryJson);
 
 
   }

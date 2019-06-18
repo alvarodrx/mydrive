@@ -1,0 +1,44 @@
+package com.operativos.mydrive;
+
+import com.google.appengine.repackaged.com.google.gson.Gson;
+
+
+import java.util.ArrayList;
+
+public class Directorio {
+    private String root;
+    private ArrayList<Directorio> childs;
+    private ArrayList<Archivo> archivos;
+
+    public Directorio(String nombre){
+        this.root = nombre;
+        childs = new ArrayList<>();
+        archivos = new ArrayList<>();
+    }
+
+    public void CrearDirectorio(String nombreDirectorio){
+        Directorio directorio = new Directorio(nombreDirectorio);
+        this.childs.add(directorio);
+    }
+
+    public void AddArchivo(Archivo archivo){
+        this.archivos.add(archivo);
+    }
+
+    public Directorio getIntoDirectorio(String nombre){
+        for(Directorio directorio : this.childs){
+            if(directorio.root.equals(nombre)){return directorio;}
+        }
+        return null;
+    }
+
+    public String getPath(){
+        return  this.root + "/";
+    }
+
+    public String getSerializableObject(){
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        return json;
+    }
+}
