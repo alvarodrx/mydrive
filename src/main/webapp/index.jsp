@@ -93,25 +93,13 @@
 </div>
 
 <div style="width: auto; text-align: center;">
+
+
     <div class="jumbotron" style="text-align: center;margin: 2rem 5%;width: 90%;position: absolute;">
-        <h3 class="display-5"><i class="material-icons">folder_open</i> Mi Storage</h3>
-        <a href="/index.jsp?file=root">
-            <div class="card" style="width: 7rem; float: left; margin: 10px; padding: 1px;" >
-                <i class="material-icons">folder</i>
-                <div class="card-body">
-                    <p class="card-text">Folder 1</p>
-                </div>
-            </div>
-        </a>
-        <a href="/index.jsp?file=root">
-            <div class="card" style="width: 7rem; float: left; margin: 10px; padding: 1px;" >
-                <i class="material-icons">insert_drive_file</i>
-                <div class="card-body">
-                    <p class="card-text">File 1</p>
-                </div>
-            </div>
-        </a>
+        <jsp:include page="/getFiles?file=${file}"/>
+
     </div>
+
 </div>
 
 </body>
