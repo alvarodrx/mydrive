@@ -15,7 +15,7 @@ public class CreateRealDirectory {
 
     private static CreateRealDirectory instance = null;
 
-    private static String AbsPath = "C:/Users/casa/Desktop/mydrive/Usuarios/";
+    private static String AbsPath = "/Users/alvaro/Documents/OneDrive - Estudiantes ITCR/Documentos/TEC/Proyectos/MyDrive/mydrive/Usuarios/";
 
     public static CreateRealDirectory getInstance()
     {

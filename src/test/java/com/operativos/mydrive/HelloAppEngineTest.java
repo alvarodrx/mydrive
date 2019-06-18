@@ -52,7 +52,7 @@ public class HelloAppEngineTest {
   @After public void tearDown() {
     helper.tearDown();
   }
-
+/*
   @Test
   public void doGet_writesResponse() throws Exception {
     servletUnderTest.doGet(mockRequest, mockResponse);
@@ -62,7 +62,7 @@ public class HelloAppEngineTest {
         .named("HelloAppEngine response")
         .contains("Hello App Engine - Standard ");
   }
-
+*/
   @Test
   public void HelloInfo_test() {
     String result = HelloAppEngine.getInfo();
@@ -70,4 +70,5 @@ public class HelloAppEngineTest {
       .named("HelloAppEngine.getInfo")
       .containsMatch("^Version:\\s+.+OS:\\s+.+User:\\s");
   }
+
 }
