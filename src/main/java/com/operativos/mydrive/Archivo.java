@@ -1,5 +1,6 @@
 package com.operativos.mydrive;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Archivo {
@@ -14,9 +15,10 @@ public class Archivo {
     private String extension;
 
     public Archivo(String name){
-        this.name = name;
+        this.name = name.substring(0, name.lastIndexOf('.'));
         this.StorageID = generarStorageID();
         this.extension = name.substring(name.length() - 4);
+        this.fechaCreacion = new Date();
 
 
     }
@@ -33,32 +35,20 @@ public class Archivo {
         this.real_path = path;
     }
 
-    public boolean CopiarRealaVirtual(){
-        //agregar la logica
-        return true;
-    }
-    public boolean CopiarVirtualaReal(){
-        //agergar la logica
-        return true;
-    }
-    public boolean CopiarVirtualaVirtual(){
-        //agregar la logica
-        return true;
-    }
-
-    public boolean Mover(){
-        //logica de mover archivo
-        return true;
-    }
-
-    public boolean Eliminar(){
-        //logica de eleminar archivo
-        return true;
-    }
 
     private String generarStorageID(){
-        //Aqui s puede modelar la logica de subir el archvo al storage y devolver su id para acceder luego
+        //Aqui se puede modelar la logica de subir el archvo al storage y devolver su id para acceder luego
         return "prueba";
+    }
+
+    public ArrayList<String> verPropiedades(){
+        ArrayList<String> propiedades = new ArrayList<>();
+        propiedades.add(this.name);
+        propiedades.add(this.extension);
+        propiedades.add(this.fechaCreacion.toString());
+        propiedades.add(this.fechaModificacion.toString());
+        propiedades.add(Integer.toString(this.size));
+        return  propiedades;
     }
 
 }

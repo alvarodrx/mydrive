@@ -56,6 +56,7 @@ public class HelloAppEngine extends HttpServlet {
 
     //entrar a un directorio y agregar un archivo
     MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
+    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").CrearDirectorio("Recordatorios");
 
 
     //Entrar a un directorio y eliminar un directorio hijo
@@ -79,6 +80,11 @@ public class HelloAppEngine extends HttpServlet {
 
     //desplazarse a una direccion y copiar un archivo
     result = MiDirectorio.gotoPath("/Mis Archivos/").CopiarDirectorioVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Mis apuntes");
+    response.getWriter().println(result);
+
+
+
+    result = MiDirectorio.gotoPath("/Mis Archivos/Mis apuntes/").MoverDirectorio(MiDirectorio,"/Compartido Conmigo", "Recordatorios");
     response.getWriter().println(result);
 
 

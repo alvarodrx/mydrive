@@ -93,10 +93,28 @@ public class Directorio {
         return true;
     }
 
+    public boolean EliminarDirectorios(ArrayList<String> nombres){
+        for(String nombre : nombres) {
+            int index = getIndexDirectorio(nombre);
+            if (index == -1) {return false; }
+            this.childs.remove(index);
+        }
+        return true;
+    }
+
     public boolean EliminarArchivo(String nombre){
         int index = getIndexArchivo(nombre);
         if(index == -1){return false;}
         this.archivos.remove(index);
+        return true;
+    }
+
+    public boolean EliminarArchivos(ArrayList<String> nombres){
+        for(String nombre : nombres){
+            int index = getIndexArchivo(nombre);
+            if(index == -1){return false;}
+            this.archivos.remove(index);
+        }
         return true;
     }
 
@@ -130,9 +148,19 @@ public class Directorio {
         return false;
     }
 
-    public void MoverArchivo(){}
+    public boolean MoverArchivo(Directorio dir, String path, String nombre){
+        for(Archivo archivo : this.archivos){
+            if(archivo.getName().equals(nombre)){dir.gotoPath(path).AddArchivo(archivo); this.EliminarArchivo(nombre); return true;}
+        }
+        return false;
+    }
 
-    public void MoverDirectorio(){}
+    public boolean MoverDirectorio(Directorio dir, String path, String nombre){
+        for(Directorio directorio : this.childs){
+            if(directorio.getRoot().equals(nombre)){dir.gotoPath(path).AddDirectorio(directorio); this.EliminarDirectorio(nombre); return true;}
+        }
+        return false;
+    }
 
 
 }
