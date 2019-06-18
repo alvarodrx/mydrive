@@ -17,6 +17,9 @@
 
         String file = request.getParameter("file");
         pageContext.setAttribute("file", file);
+
+        String path = request.getParameter("path");
+        pageContext.setAttribute("path", path);
     %>
 
     <script>
@@ -69,17 +72,6 @@
 </nav>
 <body>
 
-<h1>Hello App Engine -- Java 8!</h1>
-
-<p>This is <%= HelloAppEngine.getInfo() %>.</p>
-<table>
-    <tr>
-        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>
-    </tr>
-    <tr>
-        <td><a href='/hello'>Hello App Engine</a></td>
-    </tr>
-</table>
 <div id="fileSelector" class="input-group mb-3" style="display: none;">
     <form name="uplFile" action="/uploadFile" onsubmit="return(validate());" accept-charset="utf-8" enctype="multipart/form-data" method="POST">
         <div class="custom-file">
@@ -91,6 +83,8 @@
         </div>
     </form>
 </div>
+
+<p>${path}</p>
 
 <div style="width: auto; text-align: center;">
 

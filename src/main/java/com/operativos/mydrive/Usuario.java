@@ -22,4 +22,8 @@ public class Usuario {
         String json = gson.toJson(this);
         return json;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }
