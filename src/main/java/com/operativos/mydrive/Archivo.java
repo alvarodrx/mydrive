@@ -6,17 +6,18 @@ import java.util.Date;
 public class Archivo {
 
     private String name;
-    private String StorageID;
+    private String ID;
     private String virtual_path;
     private String real_path;
     private Date fechaCreacion;
     private Date fechaModificacion;
     private int size;
     private String extension;
+    private String contenido;
 
     public Archivo(String name){
         this.name = name.substring(0, name.lastIndexOf('.'));
-        this.StorageID = generarStorageID();
+        this.ID = generarStorageID();
         this.extension = name.substring(name.length() - 4);
         this.fechaCreacion = new Date();
 
@@ -37,8 +38,8 @@ public class Archivo {
 
 
     private String generarStorageID(){
-        //Aqui se puede modelar la logica de subir el archvo al storage y devolver su id para acceder luego
-        return "prueba";
+        RandomString rnd = new RandomString(25);
+        return rnd.nextString();
     }
 
     public ArrayList<String> verPropiedades(){
@@ -49,6 +50,14 @@ public class Archivo {
         propiedades.add(this.fechaModificacion.toString());
         propiedades.add(Integer.toString(this.size));
         return  propiedades;
+    }
+
+    public String getID(){
+        return this.ID;
+    }
+
+    public String getContenido(){
+        return this.contenido;
     }
 
 }
