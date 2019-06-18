@@ -21,6 +21,10 @@ public class Archivo {
 
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void setVirtualPath(String path){
         this.virtual_path = path;
     }

@@ -17,6 +17,9 @@ public class Directorio {
         archivos = new ArrayList<>();
     }
 
+    public String getRoot(){
+        return this.root;
+    }
     public void CrearDirectorio(String nombreDirectorio){
         Directorio directorio = new Directorio(nombreDirectorio);
         this.childs.add(directorio);
@@ -24,6 +27,10 @@ public class Directorio {
 
     public void AddArchivo(Archivo archivo){
         this.archivos.add(archivo);
+    }
+
+    public void AddDirectorio(Directorio dir){
+        this.childs.add(dir);
     }
 
     public Directorio getIntoDirectorio(String nombre){
@@ -62,4 +69,63 @@ public class Directorio {
         }
         return result;
     }
+
+    private int getIndexDirectorio(String nombre){
+        int index = 0;
+        for(Directorio directorio : this.childs){
+            if(directorio.root.equals(nombre)){return index;}
+            index++;
+        }return -1;
+    }
+
+    private int getIndexArchivo(String nombre){
+        int index = 0;
+        for(Archivo archivo : this.archivos){
+            if(archivo.getName().equals(nombre)){return index;}
+            index++;
+        }return -1;
+    }
+
+    public boolean EliminarDirectorio(String nombre){
+        int index = getIndexDirectorio(nombre);
+        if(index == -1){return false;}
+        this.childs.remove(index);
+        return true;
+    }
+
+    public boolean EliminarArchivo(String nombre){
+        int index = getIndexArchivo(nombre);
+        if(index == -1){return false;}
+        this.archivos.remove(index);
+        return true;
+    }
+
+    public ArrayList<String> getNombresDirectorios(){
+        ArrayList<String> result = new ArrayList<>();
+        for(Directorio dir : this.childs){
+            result.add(dir.getRoot());
+        }
+        return result;
+    }
+
+    public ArrayList<String> getNombresArchivos(){
+        ArrayList<String> result = new ArrayList<>();
+        for(Archivo archivo : this.archivos){
+            result.add(archivo.getName());
+        }
+        return result;
+    }
+
+    public boolean CopiarArchivoVirtualVirtual(Directorio dir, String path, String nombre){
+        for(Archivo archivo : this.archivos){
+            if(archivo.getName().equals(nombre)){dir.gotoPath(path).AddArchivo(archivo); return true;}
+        }
+        return false;
+    }
+
+    public void MoverArchivo(){}
+
+    public void MoverDirectorio(){}
+
+
 }

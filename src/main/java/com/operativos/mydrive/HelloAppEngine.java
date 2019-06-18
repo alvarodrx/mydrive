@@ -55,11 +55,22 @@ public class HelloAppEngine extends HttpServlet {
 
     MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
 
+    boolean result = MiDirectorio.getIntoDirectorio("Mis Archivos").EliminarDirectorio("Mis tareas");
+    response.getWriter().println(result);
 
-    MiDirectorio.gotoPath("MyDrive/Compartido Conmigo").AddArchivo(archivo);
+
+    MiDirectorio.gotoPath("/Compartido Conmigo").AddArchivo(archivo);
+
+    result = MiDirectorio.gotoPath("/Compartido Conmigo").EliminarArchivo("Apuntes 1.txt");
+    response.getWriter().println(result);
+
+
+
+
+    result = MiDirectorio.gotoPath("/Mis Archivos/Mis apuntes/").CopiarArchivoVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Apuntes 1.txt");
+    response.getWriter().println(result);
 
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
-
 
     response.getWriter().println(currentDirectory);
 
