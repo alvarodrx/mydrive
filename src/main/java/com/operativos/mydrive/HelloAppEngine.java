@@ -61,15 +61,14 @@ public class HelloAppEngine extends HttpServlet {
     //Creacion de un archivo
     Archivo archivo = new Archivo("Apuntes 1.txt");
     archivo.setVirtualPath(currentDirectory);
+    archivo.setContent("Hola este es un archivo de prueba");
 
     //entrar a un directorio y agregar un archivo
     MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
+    CreateRealDirectory.MakeFolderforData(usuario.getNombre());
+    CreateRealDirectory.SaveArchivo(usuario.getNombre(), archivo);
+
     MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").CrearDirectorio("Recordatorios");
-
-
-    //Entrar a un directorio y eliminar un directorio hijo
-    boolean result = MiDirectorio.getIntoDirectorio("Mis Archivos").EliminarDirectorio("Mis tareas");
-    response.getWriter().println(result);
 
 
     //desplazarse a una direccion y agregar un archivo

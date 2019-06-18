@@ -15,7 +15,7 @@ public class CreateRealDirectory {
 
     private static CreateRealDirectory instance = null;
 
-    private static String AbsPath = "C:/Users/casa/Desktop/mydrive/Usuarios/";
+    private static String AbsPath = "C:/Users/XPC/Desktop/mydrive/";
 
     public static CreateRealDirectory getInstance()
     {
@@ -26,39 +26,45 @@ public class CreateRealDirectory {
     }
 
     public static void MakeFolderforUsuario(String username){
-        File dir = new File(AbsPath + username);
+        File dir = new File(AbsPath+"Usuarios/" + username);
+        dir.mkdir();
+
+    }
+
+    public static void MakeFolderforData(String username){
+        File dir = new File(AbsPath+"BD/" + username);
         dir.mkdir();
 
     }
 
     public static void SaveUsuario(String username, String data) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(AbsPath + username + "/data.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter(AbsPath+"Usuarios/" + username + "/data.txt", "UTF-8");
         writer.print(data);
         writer.close();
     }
 
     public static Usuario ReadUsuario(String username) throws IOException {
-        String text = new String(Files.readAllBytes(Paths.get(AbsPath + username+"/data.txt")), StandardCharsets.UTF_8);
+        String text = new String(Files.readAllBytes(Paths.get(AbsPath+"Usuarios/" + username+"/data.txt")), StandardCharsets.UTF_8);
         Gson gson = new Gson();
         Usuario usuario = gson.fromJson(text, Usuario.class);
         return usuario;
     }
 
     public static void SaveDirectorio(String username, String data) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(AbsPath + username + "/FS.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter(AbsPath+"Usuarios/" + username + "/FS.txt", "UTF-8");
         writer.print(data);
         writer.close();
     }
 
     public static Directorio ReadDirectorio(String username) throws IOException {
-        String text = new String(Files.readAllBytes(Paths.get(AbsPath + username+"/FS.txt")), StandardCharsets.UTF_8);
+        String text = new String(Files.readAllBytes(Paths.get(AbsPath+"Usuarios/" + username+"/FS.txt")), StandardCharsets.UTF_8);
         Gson gson = new Gson();
         Directorio dir = gson.fromJson(text, Directorio.class);
         return dir;
     }
 
-    public static void saveArchivo(String username, Archivo archivo)throws FileNotFoundException, UnsupportedEncodingException{
-        PrintWriter writer = new PrintWriter(AbsPath + username + "/" + archivo.getID() +".txt", "UTF-8");
+    public static void SaveArchivo(String username, Archivo archivo)throws FileNotFoundException, UnsupportedEncodingException{
+        PrintWriter writer = new PrintWriter(AbsPath+"BD/" + username + "/" + archivo.getID() +".txt", "UTF-8");
         writer.print(archivo.getContenido());
         writer.close();
     }
