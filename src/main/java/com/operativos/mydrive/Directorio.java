@@ -4,6 +4,7 @@ import com.google.appengine.repackaged.com.google.gson.Gson;
 
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Directorio {
     private String root;
@@ -48,5 +49,17 @@ public class Directorio {
 
     public ArrayList<Archivo> getArchivos(){
         return this.archivos;
+    }
+
+    public Directorio gotoPath(String path){
+        Directorio result = this;
+        StringTokenizer tokens = new StringTokenizer(path, "/");
+        String nombre;
+        while(tokens.hasMoreTokens()){
+            nombre = tokens.nextToken();
+            if(this.root.equals(nombre)){nombre = tokens.nextToken();}
+            result = result.getIntoDirectorio(nombre);
+        }
+        return result;
     }
 }

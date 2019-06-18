@@ -4,6 +4,7 @@ import com.google.appengine.api.utils.SystemProperty;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,6 +56,7 @@ public class HelloAppEngine extends HttpServlet {
     MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
 
 
+    MiDirectorio.gotoPath("MyDrive/Compartido Conmigo").AddArchivo(archivo);
 
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
 
