@@ -29,11 +29,6 @@ public class HelloAppEngine extends HttpServlet {
    // CreateRealDirectory.MakeFolderforUsuario(usuario.getNombre());
    // CreateRealDirectory.SaveUsuario(usuario.getNombre(), usuario.getSerializableObject());
 
-    String[] usuarios = CreateRealDirectory.getUsuarios();
-    for(String user : usuarios){
-      response.getWriter().println(user);
-    }
-
     Usuario usuario = CreateRealDirectory.ReadUsuario("Martin");
     response.getWriter().println(usuario.getNombre());
 
@@ -41,6 +36,7 @@ public class HelloAppEngine extends HttpServlet {
 
     //Creacion de archivo raiz
     Directorio MiDirectorio = CreateRealDirectory.ReadDirectorio(usuario.getNombre());
+
 
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
 
