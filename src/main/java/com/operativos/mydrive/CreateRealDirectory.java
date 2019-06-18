@@ -6,6 +6,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -63,9 +66,23 @@ public class CreateRealDirectory {
         return dir;
     }
 
-    public static void SaveArchivo(String username, Archivo archivo)throws FileNotFoundException, UnsupportedEncodingException{
-        PrintWriter writer = new PrintWriter(AbsPath+"BD/" + username + "/" + archivo.getID() +".txt", "UTF-8");
+    public static Archivo SaveArchivo(String username, Archivo archivo)throws FileNotFoundException, UnsupportedEncodingException{
+        String path = AbsPath+"BD/" + username + "/" + archivo.getID() +".txt";
+        PrintWriter writer = new PrintWriter(path, "UTF-8");
         writer.print(archivo.getContenido());
         writer.close();
+        archivo.setRealPath(path);
+        return archivo;
     }
+
+    public static String[] getUsuarios(){
+        File file = new File(AbsPath+"Usuarios/");
+        String[] directories = file.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+            return new File(current, name).isDirectory();
+        }
+        });
+        return directories;
+}
 }

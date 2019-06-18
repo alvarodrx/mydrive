@@ -29,58 +29,20 @@ public class HelloAppEngine extends HttpServlet {
    // CreateRealDirectory.MakeFolderforUsuario(usuario.getNombre());
    // CreateRealDirectory.SaveUsuario(usuario.getNombre(), usuario.getSerializableObject());
 
+    String[] usuarios = CreateRealDirectory.getUsuarios();
+    for(String user : usuarios){
+      response.getWriter().println(user);
+    }
+
     Usuario usuario = CreateRealDirectory.ReadUsuario("Martin");
     response.getWriter().println(usuario.getNombre());
 
     String currentDirectory = "";
 
     //Creacion de archivo raiz
-    Directorio MiDirectorio = new Directorio("MyDrive");
+    Directorio MiDirectorio = CreateRealDirectory.ReadDirectorio(usuario.getNombre());
 
-
-    currentDirectory = MiDirectorio.getPath();
-
-    //Creacion de directorios por defecto
-    MiDirectorio.CrearDirectorio("Mis Archivos");
-    MiDirectorio.CrearDirectorio("Compartido Conmigo");
-
-
-    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getPath();
-
-
-    //Entrar a un directorio y crear directorios random
-    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis apuntes");
-    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis tareas");
-
-
-
-    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").getPath();
-
-
-
-    //Creacion de un archivo
-    Archivo archivo = new Archivo("Apuntes 1.txt");
-    archivo.setVirtualPath(currentDirectory);
-    archivo.setContent("Hola este es un archivo de prueba");
-
-    //entrar a un directorio y agregar un archivo
-    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
-    CreateRealDirectory.MakeFolderforData(usuario.getNombre());
-    CreateRealDirectory.SaveArchivo(usuario.getNombre(), archivo);
-
-    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").CrearDirectorio("Recordatorios");
-
-
-    //desplazarse a una direccion y agregar un archivo
-    MiDirectorio.gotoPath("/Compartido Conmigo").AddArchivo(archivo);
-
-
-    CreateRealDirectory.SaveDirectorio(usuario.getNombre(), MiDirectorio.getSerializableObject());
-
-    //seralizar el objeto directorio y pasarlo a json
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
-
-
 
 
     //mostrar el producto de todo lo anterior 
