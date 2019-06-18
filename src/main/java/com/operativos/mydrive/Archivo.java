@@ -16,13 +16,19 @@ public class Archivo {
     protected long size;
 
     public Archivo(File file, String virtual_path){
+
         this.name = file.getName();
         this.storageID = generarStorageID();
-        this.extension = this.name.split(".")[1];
-        this.uploadDate = LocalDateTime.from(Instant.now());
+        this.uploadDate = LocalDateTime.now();
         this.real_path = file.getPath();
         this.size = file.length();
         this.virtual_path = virtual_path;
+
+        try{
+            this.extension = this.name.split(".")[1];
+        }catch (Exception e){
+            this.extension = "";
+        }
     }
 
     public String getName(){
@@ -40,7 +46,7 @@ public class Archivo {
     public boolean copyVirtualToVirtual(Directorio dir){
 
         File file_ori = new File(this.real_path);
-        File file_new = new File(dir.real_path + this.getName());
+        File file_new = new File(dir.real_path + "/" + this.getName());
 
         try (InputStream reader = new FileInputStream(file_ori); OutputStream writer = new FileOutputStream(file_new))
         {

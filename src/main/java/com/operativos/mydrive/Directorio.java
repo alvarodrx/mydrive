@@ -19,11 +19,14 @@ public class Directorio extends Archivo{
     public void createDirectorio(String nombreDirectorio){
 
         // Crea el directorio fisicamente y obtiene el File
-        File dir = new File(this.getName() + nombreDirectorio + "/");
-        dir.mkdir();
+        File dir = new File(this.getRealPath() + "/" + nombreDirectorio);
+        if(dir.mkdir())
+            System.out.println("Se ha creado con exito la ruta: " + this.getRealPath() + "/" + nombreDirectorio);
+        else
+            System.out.println("No se ha creado con exito la ruta: " + this.getRealPath() + "/" + nombreDirectorio);
 
         // Crea el objeto directorio
-        Directorio directorio = new Directorio(dir,this.virtual_path + nombreDirectorio);
+        Directorio directorio = new Directorio(dir,this.virtual_path + nombreDirectorio + "/");
 
         this.children.add(directorio);
     }
@@ -34,7 +37,7 @@ public class Directorio extends Archivo{
 
     public Directorio getIntoDirectorio(String nombre){
         for(Archivo archivo : this.children){
-            if(archivo.getName().equals(nombre+"/")){return (Directorio)archivo;}
+            if(archivo.getName().equals(nombre)){return (Directorio)archivo;}
         }
         return null;
     }

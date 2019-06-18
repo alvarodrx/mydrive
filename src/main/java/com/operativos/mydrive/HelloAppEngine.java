@@ -18,6 +18,8 @@ public class HelloAppEngine extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
+    String fs_path = "/home/gerardo/Documents/TEC/Git Repos/Operativos-P3/mydrive/";
+
     Properties properties = System.getProperties();
 
     response.setContentType("text/plain");
@@ -25,22 +27,22 @@ public class HelloAppEngine extends HttpServlet {
             + SystemProperty.version.get() + " Java " + properties.get("java.specification.version"));
 
     //Creacion de archivo raiz
+    File root = new File(fs_path + "FS/Gerardo/MyDrive");
 
-    File root = new File("./FS/Gerardo/MyDrive");
+    // Si la raiz no existe la crea
     if(!root.exists())
-      root.mkdir();
-    Directorio MiDirectorio = new Directorio(new File("./FS/Gerardo/MyDrive"), "MyDrive/");
+      root.mkdirs(); //Crea el directorio actual y los parents
 
 
+    Directorio MiDirectorio = new Directorio(root, "MyDrive/");
     String currentDirectory = MiDirectorio.getPath();
 
     //Creacion de directorios por defecto
     MiDirectorio.createDirectorio("Mis Archivos");
     MiDirectorio.createDirectorio("Compartido Conmigo");
 
-
-    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getName();
-
+    // Obtiene el path de mis archivos
+    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getName() + "/";
 
     //Entrar a un directorio y crear directorios random
     MiDirectorio.getIntoDirectorio("Mis Archivos").createDirectorio("Mis apuntes");
@@ -48,15 +50,23 @@ public class HelloAppEngine extends HttpServlet {
 
 
     Directorio currentDirectoryFile = MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes");
-    currentDirectory += currentDirectoryFile.getName();
+    currentDirectory += currentDirectoryFile.getName() + "/";
 
 
     //Creacion de un archivo
-    File file = new File(currentDirectoryFile.getRealPath());
-    if(!file.exists())
-      file.createNewFile();
+    File file = new File(currentDirectoryFile.getRealPath() + "/Apuntes.txt");
 
-    Archivo archivo = new Archivo(file, currentDirectory + "/Apuntes 1.txt");
+    if(!file.exists())
+      if(file.createNewFile())
+        System.out.println("Se ha creado con exito el archivo: " + currentDirectoryFile.getRealPath() + "/Apuntes.txt");
+      else
+        System.out.println("No se ha creado con exito el archivo: " + currentDirectoryFile.getRealPath() + "/Apuntes.txt");
+
+    Archivo archivo = new Archivo(file, currentDirectory + "Apuntes.txt");
+    currentDirectoryFile.addChild(archivo);
+
+    Directorio tareas = MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis tareas");
+    archivo.copyVirtualToVirtual(tareas);
 
     /*
     //Entrar a un directorio y eliminar un directorio hijo
@@ -81,8 +91,8 @@ public class HelloAppEngine extends HttpServlet {
     //desplazarse a una direccion y copiar un archivo
     result = MiDirectorio.gotoPath("/Mis Archivos/").CopiarDirectorioVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Mis apuntes");
     response.getWriter().println(result);
-    */
 
+    */
 
     //seralizar el objeto directorio y pasarlo a json
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
@@ -91,8 +101,9 @@ public class HelloAppEngine extends HttpServlet {
     //mostrar el producto de todo lo anterior 
     response.getWriter().println(currentDirectory);
 
-    response.getWriter().println(CompleteDirectoryJson);
+    response.getWriter().println(currentDirectoryFile.getPath());
 
+    response.getWriter().println(CompleteDirectoryJson);
 
   }
 
