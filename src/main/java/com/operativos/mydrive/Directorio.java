@@ -123,6 +123,13 @@ public class Directorio {
         return false;
     }
 
+    public boolean CopiarDirectorioVirtualVirtual(Directorio dir, String path, String nombre){
+        for(Directorio directorio : this.childs){
+            if(directorio.getRoot().equals(nombre)){dir.gotoPath(path).AddDirectorio(directorio); return true;}
+        }
+        return false;
+    }
+
     public void MoverArchivo(){}
 
     public void MoverDirectorio(){}
