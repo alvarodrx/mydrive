@@ -24,6 +24,14 @@ public class HelloAppEngine extends HttpServlet {
     response.getWriter().println("Hello App Engine - Standard using "
             + SystemProperty.version.get() + " Java " + properties.get("java.specification.version"));
 
+   // Usuario usuario = new Usuario("Martin", "martin@algo.com", "123456");
+
+   // CreateRealDirectory.MakeFolderforUsuario(usuario.getNombre());
+   // CreateRealDirectory.SaveUsuario(usuario.getNombre(), usuario.getSerializableObject());
+
+    Usuario usuario = CreateRealDirectory.ReadUsuario("Martin");
+    response.getWriter().println(usuario.getNombre());
+
     String currentDirectory = "";
 
     //Creacion de archivo raiz
@@ -68,29 +76,12 @@ public class HelloAppEngine extends HttpServlet {
     MiDirectorio.gotoPath("/Compartido Conmigo").AddArchivo(archivo);
 
 
-    //desplazarse a una direccion y eliminar un archivo
-    result = MiDirectorio.gotoPath("/Compartido Conmigo").EliminarArchivo("Apuntes 1.txt");
-    response.getWriter().println(result);
-
-
-
-    //desplazarse a una direccion y capiar un directorio
-    result = MiDirectorio.gotoPath("/Mis Archivos/Mis apuntes/").CopiarArchivoVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Apuntes 1.txt");
-    response.getWriter().println(result);
-
-    //desplazarse a una direccion y copiar un archivo
-    result = MiDirectorio.gotoPath("/Mis Archivos/").CopiarDirectorioVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Mis apuntes");
-    response.getWriter().println(result);
-
-
-
-    result = MiDirectorio.gotoPath("/Mis Archivos/Mis apuntes/").MoverDirectorio(MiDirectorio,"/Compartido Conmigo", "Recordatorios");
-    response.getWriter().println(result);
-
-
+    CreateRealDirectory.SaveDirectorio(usuario.getNombre(), MiDirectorio.getSerializableObject());
 
     //seralizar el objeto directorio y pasarlo a json
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
+
+
 
 
     //mostrar el producto de todo lo anterior 
