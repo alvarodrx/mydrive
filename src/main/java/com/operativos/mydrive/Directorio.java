@@ -41,4 +41,12 @@ public class Directorio {
         String json = gson.toJson(this);
         return json;
     }
+
+    public ArrayList<Directorio> getDirectorios(){
+        return this.childs;
+    }
+
+    public ArrayList<Archivo> getArchivos(){
+        return this.archivos;
+    }
 }
