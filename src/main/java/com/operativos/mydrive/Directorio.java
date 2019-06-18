@@ -3,45 +3,40 @@ package com.operativos.mydrive;
 import com.google.appengine.repackaged.com.google.gson.Gson;
 
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Directorio {
-    private String root;
-    private ArrayList<Directorio> childs;
-    private ArrayList<Archivo> archivos;
+public class Directorio extends Archivo{
 
-    public Directorio(String nombre){
-        this.root = nombre;
-        childs = new ArrayList<>();
-        archivos = new ArrayList<>();
+    private ArrayList<Archivo> children;
+
+    public Directorio(File file, String virtual_path){
+        super(file, virtual_path);
+        this.children = new ArrayList<>();
     }
 
-    public String getRoot(){
-        return this.root;
-    }
-    public void CrearDirectorio(String nombreDirectorio){
-        Directorio directorio = new Directorio(nombreDirectorio);
-        this.childs.add(directorio);
+    public void createDirectorio(String nombreDirectorio){
+
+        // Crea el directorio fisicamente y obtiene el File
+        File dir = new File(this.getName() + nombreDirectorio + "/");
+        dir.mkdir();
+
+        // Crea el objeto directorio
+        Directorio directorio = new Directorio(dir,this.virtual_path + nombreDirectorio);
+
+        this.children.add(directorio);
     }
 
-    public void AddArchivo(Archivo archivo){
-        this.archivos.add(archivo);
-    }
-
-    public void AddDirectorio(Directorio dir){
-        this.childs.add(dir);
+    public void addChild(Archivo archivo){
+        this.children.add(archivo);
     }
 
     public Directorio getIntoDirectorio(String nombre){
-        for(Directorio directorio : this.childs){
-            if(directorio.root.equals(nombre)){return directorio;}
+        for(Archivo archivo : this.children){
+            if(archivo.getName().equals(nombre+"/")){return (Directorio)archivo;}
         }
         return null;
-    }
-
-    public String getPath(){
-        return  this.root + "/";
     }
 
     public String getSerializableObject(){
@@ -50,75 +45,73 @@ public class Directorio {
         return json;
     }
 
-    public ArrayList<Directorio> getDirectorios(){
-        return this.childs;
-    }
-
-    public ArrayList<Archivo> getArchivos(){
-        return this.archivos;
+    public ArrayList<Archivo> getChildren(){
+        return this.children;
     }
 
     public Directorio gotoPath(String path){
+
         Directorio result = this;
         StringTokenizer tokens = new StringTokenizer(path, "/");
         String nombre;
+
         while(tokens.hasMoreTokens()){
+
             nombre = tokens.nextToken();
-            if(this.root.equals(nombre)){nombre = tokens.nextToken();}
+
+            if(result != null && result.getName().equals(nombre)){
+                nombre = tokens.nextToken();
+            }
+
             result = result.getIntoDirectorio(nombre);
         }
+
         return result;
     }
 
-    private int getIndexDirectorio(String nombre){
+    private int getIndexChild(String nombre){
         int index = 0;
-        for(Directorio directorio : this.childs){
-            if(directorio.root.equals(nombre)){return index;}
-            index++;
-        }return -1;
-    }
-
-    private int getIndexArchivo(String nombre){
-        int index = 0;
-        for(Archivo archivo : this.archivos){
+        for(Archivo archivo: this.children){
             if(archivo.getName().equals(nombre)){return index;}
             index++;
         }return -1;
     }
 
-    public boolean EliminarDirectorio(String nombre){
-        int index = getIndexDirectorio(nombre);
-        if(index == -1){return false;}
-        this.childs.remove(index);
+    public boolean deleteChild(String nombre){
+        int index = getIndexChild(nombre);
+        if(index == -1){ return false; }
+        this.children.remove(index);
         return true;
     }
 
-    public boolean EliminarArchivo(String nombre){
-        int index = getIndexArchivo(nombre);
-        if(index == -1){return false;}
-        this.archivos.remove(index);
-        return true;
-    }
-
-    public ArrayList<String> getNombresDirectorios(){
+    public ArrayList<String> getChildrenNames(){
         ArrayList<String> result = new ArrayList<>();
-        for(Directorio dir : this.childs){
-            result.add(dir.getRoot());
+        for(Archivo file: this.children){
+            result.add(file.getName());
         }
         return result;
     }
 
-    public ArrayList<String> getNombresArchivos(){
-        ArrayList<String> result = new ArrayList<>();
-        for(Archivo archivo : this.archivos){
-            result.add(archivo.getName());
+    public boolean copyVirtualToVirtual(Directorio dir){
+
+        // "Copia" la carpeta
+        dir.createDirectorio(this.getName());
+        dir = dir.getIntoDirectorio(this.getName());
+
+        // Copia cada child (archivos y carpetas)
+        for(Archivo archivo : this.children){
+
+            if(!archivo.copyVirtualToVirtual(dir))
+                return false;
         }
-        return result;
+
+        return true;
     }
 
+    /*
     public boolean CopiarArchivoVirtualVirtual(Directorio dir, String path, String nombre){
         for(Archivo archivo : this.archivos){
-            if(archivo.getName().equals(nombre)){dir.gotoPath(path).AddArchivo(archivo); return true;}
+            if(archivo.getName().equals(nombre)){dir.gotoPath(path).addChild(archivo); return true;}
         }
         return false;
     }
@@ -128,11 +121,9 @@ public class Directorio {
             if(directorio.getRoot().equals(nombre)){dir.gotoPath(path).AddDirectorio(directorio); return true;}
         }
         return false;
-    }
+    }*/
 
-    public void MoverArchivo(){}
-
-    public void MoverDirectorio(){}
+    public void move(){}
 
 
 }

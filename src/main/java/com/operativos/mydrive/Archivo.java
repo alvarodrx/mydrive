@@ -1,42 +1,64 @@
 package com.operativos.mydrive;
 
-import java.util.Date;
+import java.io.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Archivo {
 
-    private String name;
-    private String StorageID;
-    private String virtual_path;
-    private String real_path;
-    private Date fechaCreacion;
-    private Date fechaModificacion;
-    private int size;
-    private String extension;
+    protected String name;
+    protected String storageID;
+    protected String virtual_path;
+    protected String real_path;
+    protected String extension;
+    protected LocalDateTime uploadDate;
+    protected LocalDateTime editDate;
+    protected long size;
 
-    public Archivo(String name){
-        this.name = name;
-        this.StorageID = generarStorageID();
-        this.extension = name.substring(name.length() - 4);
-
-
+    public Archivo(File file, String virtual_path){
+        this.name = file.getName();
+        this.storageID = generarStorageID();
+        this.extension = this.name.split(".")[1];
+        this.uploadDate = LocalDateTime.from(Instant.now());
+        this.real_path = file.getPath();
+        this.size = file.length();
+        this.virtual_path = virtual_path;
     }
 
     public String getName(){
         return this.name;
     }
 
-    public void setVirtualPath(String path){
-        this.virtual_path = path;
+    public String getPath(){
+        return virtual_path;
     }
 
-    public void setRealPath(String path){
-        this.real_path = path;
+    public String getRealPath(){
+        return real_path;
     }
 
-    public boolean CopiarRealaVirtual(){
-        //agregar la logica
-        return true;
+    public boolean copyVirtualToVirtual(Directorio dir){
+
+        File file_ori = new File(this.real_path);
+        File file_new = new File(dir.real_path + this.getName());
+
+        try (InputStream reader = new FileInputStream(file_ori); OutputStream writer = new FileOutputStream(file_new))
+        {
+            while(reader.available() > 0){
+                writer.write(reader.read());
+            }
+
+            Archivo archivo_new = new Archivo(file_new, dir.virtual_path + this.getName());
+            dir.addChild(archivo_new);
+
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
+
     }
+
     public boolean CopiarVirtualaReal(){
         //agergar la logica
         return true;
