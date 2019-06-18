@@ -60,4 +60,8 @@ public class Archivo {
         return this.contenido;
     }
 
+    public void setContent(String content){
+        this.contenido = content;
+    }
+
 }

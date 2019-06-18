@@ -35,53 +35,10 @@ public class HelloAppEngine extends HttpServlet {
     String currentDirectory = "";
 
     //Creacion de archivo raiz
-    Directorio MiDirectorio = new Directorio("MyDrive");
+    Directorio MiDirectorio = CreateRealDirectory.ReadDirectorio(usuario.getNombre());
 
 
-    currentDirectory = MiDirectorio.getPath();
-
-    //Creacion de directorios por defecto
-    MiDirectorio.CrearDirectorio("Mis Archivos");
-    MiDirectorio.CrearDirectorio("Compartido Conmigo");
-
-
-    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getPath();
-
-
-    //Entrar a un directorio y crear directorios random
-    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis apuntes");
-    MiDirectorio.getIntoDirectorio("Mis Archivos").CrearDirectorio("Mis tareas");
-
-
-
-    currentDirectory += MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").getPath();
-
-
-
-    //Creacion de un archivo
-    Archivo archivo = new Archivo("Apuntes 1.txt");
-    archivo.setVirtualPath(currentDirectory);
-
-    //entrar a un directorio y agregar un archivo
-    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").AddArchivo(archivo);
-    MiDirectorio.getIntoDirectorio("Mis Archivos").getIntoDirectorio("Mis apuntes").CrearDirectorio("Recordatorios");
-
-
-    //Entrar a un directorio y eliminar un directorio hijo
-    boolean result = MiDirectorio.getIntoDirectorio("Mis Archivos").EliminarDirectorio("Mis tareas");
-    response.getWriter().println(result);
-
-
-    //desplazarse a una direccion y agregar un archivo
-    MiDirectorio.gotoPath("/Compartido Conmigo").AddArchivo(archivo);
-
-
-    CreateRealDirectory.SaveDirectorio(usuario.getNombre(), MiDirectorio.getSerializableObject());
-
-    //seralizar el objeto directorio y pasarlo a json
     String CompleteDirectoryJson = MiDirectorio.getSerializableObject();
-
-
 
 
     //mostrar el producto de todo lo anterior 
