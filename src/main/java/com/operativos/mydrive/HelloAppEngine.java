@@ -18,23 +18,18 @@ public class HelloAppEngine extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
-    String fs_path = "/home/gerardo/Documents/TEC/Git Repos/Operativos-P3/mydrive/";
-
-    Properties properties = System.getProperties();
+        Properties properties = System.getProperties();
 
     response.setContentType("text/plain");
     response.getWriter().println("Hello App Engine - Standard using "
             + SystemProperty.version.get() + " Java " + properties.get("java.specification.version"));
 
-    //Creacion de archivo raiz
-    File root = new File(fs_path + "FS/Gerardo/MyDrive");
+    // Crea al menos un usuario.
+    Controller.initialize();
 
-    // Si la raiz no existe la crea
-    if(!root.exists())
-      root.mkdirs(); //Crea el directorio actual y los parents
+    // Inicializa el objeto Controller
+    Directorio MiDirectorio = Controller.getUserRoot();
 
-
-    Directorio MiDirectorio = new Directorio(root, "MyDrive/");
     String currentDirectory = MiDirectorio.getPath();
 
     //Creacion de directorios por defecto
@@ -91,7 +86,6 @@ public class HelloAppEngine extends HttpServlet {
     //desplazarse a una direccion y copiar un archivo
     result = MiDirectorio.gotoPath("/Mis Archivos/").CopiarDirectorioVirtualVirtual(MiDirectorio,"/Compartido Conmigo", "Mis apuntes");
     response.getWriter().println(result);
-
     */
 
     //seralizar el objeto directorio y pasarlo a json

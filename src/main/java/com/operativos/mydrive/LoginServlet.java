@@ -1,3 +1,4 @@
+
 package com.operativos.mydrive;
 
 import org.json.simple.JSONArray;
@@ -21,39 +22,34 @@ public class LoginServlet extends BaseServlet {
         String type = req.getParameter("type");
 
         HttpSession session = req.getSession(true);
-        //session.removeAttribute("errorTxt");
 
         if (type != null && !type.equals("")){
-            session.setAttribute("errorTxt", "");
-            session.removeAttribute("userId");
-            session.removeAttribute("millis");
+            session.invalidate();
             resp.sendRedirect("login.jsp");
 
             return;
         }
 
+        try {
+
+            Usuario usuario = Usuario.getUser(username);
+            String pass = usuario.getPassword();
+
+            if(pass.equals(password)){
+                session.setAttribute("userId", username);
+                session.setAttribute("millis", Calendar.getInstance().getTimeInMillis());
+                session.setMaxInactiveInterval(3600);
+                resp.sendRedirect("/index.jsp?file=MyDrive");
+                return;
+            } else {
+                session.setAttribute("errorTxt", "Contrase&ntilde;a incorrecta.");
+                resp.sendRedirect("login.jsp");
+            }
 
 
-        JSONUtility jsu = new JSONUtility();
-        //jsu.createNewUser("alvaro","asdasd");
-
-        //JSONUtility jsu = new JSONUtility();
-        JSONObject user = jsu.createUser(username,password);
-        JSONArray userList = jsu.readJSONFile();
-
-        out.print(userList.toJSONString() + "\n");
-
-        out.print(user.toJSONString() + "\n");
-
-        if (userList.contains(user)){
-            session.setAttribute("userId", username);
-            session.setAttribute("millis", Calendar.getInstance().getTimeInMillis());
-            session.setMaxInactiveInterval(3600);
-            resp.sendRedirect("/");
-            return;
-        } else {
-            session.setAttribute("errorTxt", "Usuario o Contrase&ntilde;a incorrecto.");
-            resp.sendRedirect("login.jsp");
+        } catch (Exception e){
+            out.print(e.getStackTrace());
+            session.setAttribute("errorTxt", "Usuario incorrecto.");
         }
 
     }

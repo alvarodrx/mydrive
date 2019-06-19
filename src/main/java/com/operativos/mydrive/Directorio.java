@@ -111,22 +111,14 @@ public class Directorio extends Archivo{
         return true;
     }
 
-    /*
-    public boolean CopiarArchivoVirtualVirtual(Directorio dir, String path, String nombre){
-        for(Archivo archivo : this.archivos){
-            if(archivo.getName().equals(nombre)){dir.gotoPath(path).addChild(archivo); return true;}
+    public boolean delete(Directorio parent){
+
+        for(Archivo archivo : this.getChildren()){
+            archivo.delete(this);
         }
-        return false;
+
+        return super.delete(parent);
     }
-
-    public boolean CopiarDirectorioVirtualVirtual(Directorio dir, String path, String nombre){
-        for(Directorio directorio : this.childs){
-            if(directorio.getRoot().equals(nombre)){dir.gotoPath(path).AddDirectorio(directorio); return true;}
-        }
-        return false;
-    }*/
-
-    public void move(){}
 
 
 }

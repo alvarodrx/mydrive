@@ -74,13 +74,21 @@ public class Archivo {
         return true;
     }
 
-    public boolean Mover(){
-        //logica de mover archivo
+    public boolean move(Directorio dir, Directorio parent){
+
+        this.copyVirtualToVirtual(dir);
+        this.delete(parent);
+
         return true;
     }
 
-    public boolean Eliminar(){
-        //logica de eleminar archivo
+    public boolean delete(Directorio parent){
+
+        parent.deleteChild(this.getName());
+
+        File file = new File(this.getRealPath());
+        file.delete();
+
         return true;
     }
 
